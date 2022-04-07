@@ -5,7 +5,18 @@ import (
 	"strconv"
 
 	"github.com/labstack/echo/v4"
+	services "github.com/quantumsheep/fizzbuzz-rest/services/cache"
 )
+
+type FizzbuzzHandler struct {
+	Cache services.Cache
+}
+
+func NewFizzbuzzHandler(cache services.Cache) *FizzbuzzHandler {
+	return &FizzbuzzHandler{
+		Cache: cache,
+	}
+}
 
 type getFizzbuzzDTO struct {
 	Limit int    `param:"limit" query:"limit" form:"limit" json:"limit" xml:"limit" validate:"required"`
@@ -15,7 +26,7 @@ type getFizzbuzzDTO struct {
 	Str2  string `param:"str2" query:"str2" form:"str2" json:"str2" xml:"str2" validate:"required"`
 }
 
-func Fizzbuzz(c echo.Context) (err error) {
+func (h *FizzbuzzHandler) Fizzbuzz(c echo.Context) (err error) {
 	u := new(getFizzbuzzDTO)
 	if err := c.Bind(u); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
