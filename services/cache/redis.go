@@ -17,6 +17,7 @@ func NewRedisCache(address string) *RedisCache {
 		client: redis.NewClient(&redis.Options{
 			Addr: address,
 		}),
+		ctx: context.Background(),
 	}
 }
 
