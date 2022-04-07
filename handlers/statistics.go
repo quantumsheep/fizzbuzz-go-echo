@@ -25,7 +25,10 @@ func (h *StatisticsHandler) Statistics(c echo.Context) (err error) {
 	}
 
 	parameters := make(map[string]interface{})
-	json.Unmarshal([]byte(key), &parameters)
+	err = json.Unmarshal([]byte(key), &parameters)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"parameters": parameters,

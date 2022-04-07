@@ -73,10 +73,16 @@ func (h *FizzbuzzHandler) Fizzbuzz(c echo.Context) (err error) {
 	}
 
 	count += 1
-	h.Cache.Set(string(cacheKey), strconv.Itoa(count))
+	err = h.Cache.Set(string(cacheKey), strconv.Itoa(count))
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	}
 
 	if _, hits, err := getBestFizzbuzz(h.Cache); err != nil || count+1 > hits {
-		h.Cache.Set("fizzbuzz-best", string(cacheKey))
+		err = h.Cache.Set("fizzbuzz-best", string(cacheKey))
+		if err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+		}
 	}
 
 	return c.JSON(200, strings)
