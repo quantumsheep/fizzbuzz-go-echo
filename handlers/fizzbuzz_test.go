@@ -29,3 +29,35 @@ func TestFizzBuzz1(t *testing.T) {
 		assert.Equal(t, `["1","2","Fizz","4","Buzz","Fizz","7","8","Fizz","Buzz"]`, strings.TrimSpace(rec.Body.String()))
 	}
 }
+
+func TestFizzBuzzCaching(t *testing.T) {
+	mockedCache := services.NewMockedCache()
+	fizzbuzzHandler := NewFizzbuzzHandler(mockedCache)
+
+	e := echo.New()
+	e.Validator = handlers_validator.NewCustomValidator()
+
+	req := httptest.NewRequest(http.MethodGet, "/fizzbuzz?limit=10&int1=3&int2=5&str1=Fizz&str2=Buzz", nil)
+	rec := httptest.NewRecorder()
+	c := e.NewContext(req, rec)
+
+	if assert.NoError(t, fizzbuzzHandler.Fizzbuzz(c)) {
+		assert.Equal(t, http.StatusOK, rec.Code)
+
+		dto := &GetFizzbuzzDTO{
+			Limit: 10,
+			Int1:  3,
+			Int2:  5,
+			Str1:  "Fizz",
+			Str2:  "Buzz",
+		}
+
+		cacheKey, err := fizzbuzzHandler.getFizzbuzzCacheKey(dto)
+		assert.NoError(t, err)
+
+		cacheEntry, err := mockedCache.Get(string(cacheKey))
+		assert.NoError(t, err)
+
+		assert.Equal(t, "1", cacheEntry)
+	}
+}
