@@ -28,5 +28,8 @@ func main() {
 	fizzbuzzHandler := handlers.NewFizzbuzzHandler(cache)
 	e.GET("/fizzbuzz", fizzbuzzHandler.Fizzbuzz)
 
+	statisticsHandler := handlers.NewStatisticsHandler(cache)
+	e.GET("/statistics", statisticsHandler.Statistics)
+
 	e.Logger.Fatal(e.Start(":1323"))
 }
