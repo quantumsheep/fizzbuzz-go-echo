@@ -14,5 +14,7 @@ func main() {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
+	e.GET("/fizzbuzz", handlers.Fizzbuzz)
+
 	e.Logger.Fatal(e.Start(":1323"))
 }
