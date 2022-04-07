@@ -28,6 +28,16 @@ type GetFizzbuzzDTO struct {
 	Str2  string `param:"str2" query:"str2" form:"str2" json:"str2" xml:"str2" validate:"required"`
 }
 
+// @Produce      json
+// @Param        limit			query		int  		true  		"generate fizzbuzz from 1 to this number (inclusive)"
+// @Param        int1			query   	int  		true  		"str2 will be append if n is divisible by this number"
+// @Param        str1			query   	string  	true  		"value to be append if n is divisible by int1"
+// @Param        int2			query   	int  		true  		"str2 will be append if n is divisible by this number"
+// @Param        str2			query   	string  	true  		"value to be append if n is divisible by int2"
+// @Success      200			{object}  	[]string
+// @Failure      400
+// @Failure      500
+// @Router       /fizzbuzz [get]
 func (h *FizzbuzzHandler) Fizzbuzz(c echo.Context) (err error) {
 	dto := new(GetFizzbuzzDTO)
 	if err := c.Bind(dto); err != nil {

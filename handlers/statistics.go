@@ -18,20 +18,29 @@ func NewStatisticsHandler(cache services.Cache) *StatisticsHandler {
 	}
 }
 
+type GetStatisticsResponseDTO struct {
+	Hits       int            `json:"hits"`
+	Parameters GetFizzbuzzDTO `json:"parameters"`
+}
+
+// @Produce      json
+// @Success      200			{object}  	GetStatisticsResponseDTO
+// @Failure      500
+// @Router       /statistics [get]
 func (h *StatisticsHandler) Statistics(c echo.Context) (err error) {
 	key, hits, err := getBestFizzbuzz(h.Cache)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 
-	parameters := make(map[string]interface{})
+	var parameters GetFizzbuzzDTO
 	err = json.Unmarshal([]byte(key), &parameters)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"parameters": parameters,
-		"hits":       hits,
+	return c.JSON(http.StatusOK, GetStatisticsResponseDTO{
+		Hits:       hits,
+		Parameters: parameters,
 	})
 }

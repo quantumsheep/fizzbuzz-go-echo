@@ -1,0 +1,85 @@
+definitions:
+  handlers.GetFizzbuzzDTO:
+    properties:
+      int1:
+        type: integer
+      int2:
+        type: integer
+      limit:
+        type: integer
+      str1:
+        type: string
+      str2:
+        type: string
+    required:
+    - int1
+    - int2
+    - limit
+    - str1
+    - str2
+    type: object
+  handlers.GetStatisticsResponseDTO:
+    properties:
+      hits:
+        type: integer
+      parameters:
+        $ref: '#/definitions/handlers.GetFizzbuzzDTO'
+    type: object
+info:
+  contact: {}
+  title: Fizzbuzz REST API
+  version: "1.0"
+paths:
+  /fizzbuzz:
+    get:
+      parameters:
+      - description: generate fizzbuzz from 1 to this number (inclusive)
+        in: query
+        name: limit
+        required: true
+        type: integer
+      - description: str2 will be append if n is divisible by this number
+        in: query
+        name: int1
+        required: true
+        type: integer
+      - description: value to be append if n is divisible by int1
+        in: query
+        name: str1
+        required: true
+        type: string
+      - description: str2 will be append if n is divisible by this number
+        in: query
+        name: int2
+        required: true
+        type: integer
+      - description: value to be append if n is divisible by int2
+        in: query
+        name: str2
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              type: string
+            type: array
+        "400":
+          description: ""
+        "500":
+          description: ""
+  /statistics:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.GetStatisticsResponseDTO'
+        "500":
+          description: ""
+swagger: "2.0"

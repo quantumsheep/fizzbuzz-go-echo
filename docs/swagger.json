@@ -1,0 +1,129 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Fizzbuzz REST API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "paths": {
+        "/fizzbuzz": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "generate fizzbuzz from 1 to this number (inclusive)",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "str2 will be append if n is divisible by this number",
+                        "name": "int1",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "value to be append if n is divisible by int1",
+                        "name": "str1",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "str2 will be append if n is divisible by this number",
+                        "name": "int2",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "value to be append if n is divisible by int2",
+                        "name": "str2",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": ""
+                    },
+                    "500": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/statistics": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.GetStatisticsResponseDTO"
+                        }
+                    },
+                    "500": {
+                        "description": ""
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "handlers.GetFizzbuzzDTO": {
+            "type": "object",
+            "required": [
+                "int1",
+                "int2",
+                "limit",
+                "str1",
+                "str2"
+            ],
+            "properties": {
+                "int1": {
+                    "type": "integer"
+                },
+                "int2": {
+                    "type": "integer"
+                },
+                "limit": {
+                    "type": "integer"
+                },
+                "str1": {
+                    "type": "string"
+                },
+                "str2": {
+                    "type": "string"
+                }
+            }
+        },
+        "handlers.GetStatisticsResponseDTO": {
+            "type": "object",
+            "properties": {
+                "hits": {
+                    "type": "integer"
+                },
+                "parameters": {
+                    "$ref": "#/definitions/handlers.GetFizzbuzzDTO"
+                }
+            }
+        }
+    }
+}

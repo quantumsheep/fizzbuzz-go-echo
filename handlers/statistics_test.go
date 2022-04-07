@@ -50,6 +50,6 @@ func TestStatisticsMostUsed(t *testing.T) {
 	if assert.NoError(t, statisticsHandler.Statistics(c)) {
 		assert.Equal(t, http.StatusOK, rec.Code)
 		assert.Equal(t, "application/json; charset=UTF-8", rec.Header().Get(echo.HeaderContentType))
-		assert.Equal(t, `{"hits":2,"parameters":{"int1":3,"int2":5,"limit":10,"str1":"Fizz","str2":"Buzz"}}`, strings.TrimSpace(rec.Body.String()))
+		assert.Equal(t, `{"hits":2,"parameters":{"limit":10,"int1":3,"int2":5,"str1":"Fizz","str2":"Buzz"}}`, strings.TrimSpace(rec.Body.String()))
 	}
 }
